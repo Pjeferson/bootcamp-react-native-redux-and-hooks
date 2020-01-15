@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
@@ -13,12 +15,12 @@ export default Routes = createAppContainer(
       Cart,
     },
     {
-      defaultNavigationOptions: {
-        header: Header,
+      defaultNavigationOptions: navigation => ({
+        header: () => <Header {...navigation} />,
         cardStyle: {
           backgroundColor: '#191920',
         },
-      },
+      }),
     }
   )
 );
