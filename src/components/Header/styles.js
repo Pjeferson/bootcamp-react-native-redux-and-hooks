@@ -1,10 +1,11 @@
 import styled from 'styled-components/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { RectButton } from 'react-native-gesture-handler';
 
-export const Wrapper = styled(SafeAreaView)`
+export const Wrapper = styled.SafeAreaView`
   flex: 0;
-  background: red; /*Search SafeAreaView bug */
+  background: red; /*Search SafeAreaView bug on android*/
   flex-direction: row;
+  margin: 25px 0 35px 0;
 `;
 
 export const Container = styled.View`
@@ -13,6 +14,7 @@ export const Container = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  background: #141419;
 `;
 
 export const Logo = styled.Image`
@@ -20,10 +22,12 @@ export const Logo = styled.Image`
   width: 185px;
 `;
 
-export const CartContainer = styled.View`
+export const CartContainer = styled(RectButton)`
+  /*Adapting TouchableOpacity*/
   height: 24px;
   width: 24px;
 `;
+
 export const ProductsCounter = styled.Text`
   color: #fff;
   text-align: center;
