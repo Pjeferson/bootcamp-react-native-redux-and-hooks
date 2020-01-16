@@ -8,7 +8,7 @@ import Cart from './pages/Cart';
 
 import Header from './components/Header';
 
-export default Routes = createAppContainer(
+const Routes = createAppContainer(
   createStackNavigator(
     {
       Main,
@@ -24,3 +24,5 @@ export default Routes = createAppContainer(
     }
   )
 );
+
+export default Routes;
