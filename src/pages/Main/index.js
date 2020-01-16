@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import PropTypes from 'prop-types';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -77,6 +78,10 @@ class Main extends Component {
     );
   }
 }
+
+Main.propTypes = {
+  addToCartRequest: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = state => ({});
 
