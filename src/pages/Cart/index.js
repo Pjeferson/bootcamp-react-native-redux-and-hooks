@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -29,78 +28,69 @@ import {
 import { formatPrice } from '../../util/format';
 import * as CartActions from '../../store/modules/cart/actions';
 
-class Cart extends Component {
-  increment = product => {
-    const { updateAmountRequest } = this.props;
+export default function Cart() {
+  const cart = useSelector(state =>
+    state.cart.map(p => ({
+      ...p,
+      subTotalFormatted: formatPrice(p.price * p.amount),
+    }))
+  );
 
-    updateAmountRequest(product.id, product.amount + 1);
-  };
+  const totalFormatted = useSelector(state =>
+    formatPrice(
+      state.cart.reduce((amountSum, p) => {
+        return amountSum + p.price * p.amount;
+      }, 0)
+    )
+  );
 
-  decrement = product => {
-    const { updateAmountRequest } = this.props;
+  const dispatch = useDispatch();
 
-    updateAmountRequest(product.id, product.amount - 1);
-  };
-
-  render() {
-    const { cart, removeFromCart, totalFormatted } = this.props;
-    return (
-      <Container>
-        <Products>
-          {cart.map(p => (
-            <Product key={String(p.id)}>
-              <Infos>
-                <Photo source={{ uri: p.image }} />
-                <Details>
-                  <Title>{p.title}</Title>
-                  <Price>{p.priceFormatted}</Price>
-                </Details>
-                <DeleteButton onPress={() => removeFromCart(p.id)}>
-                  <Icon name="delete-forever" color="#7159c1" size={24} />
-                </DeleteButton>
-              </Infos>
-              <Control>
-                <RemoveButton onPress={() => this.decrement(p)}>
-                  <Icon
-                    name="remove-circle-outline"
-                    color="#7159c1"
-                    size={20}
-                  />
-                </RemoveButton>
-                <ProductAmount value={String(p.amount)} />
-                <AddButton onPress={() => this.increment(p)}>
-                  <Icon name="add-circle-outline" color="#7159c1" size={20} />
-                </AddButton>
-                <Subtotal>{p.subTotalFormatted}</Subtotal>
-              </Control>
-            </Product>
-          ))}
-        </Products>
-        <Total>
-          <TotalText>Total</TotalText>
-          <TotalValue>{totalFormatted}</TotalValue>
-        </Total>
-        <OrderButton>
-          <OrderText>Finalizar Pedido</OrderText>
-        </OrderButton>
-      </Container>
-    );
+  function increment(product) {
+    dispatch(CartActions.updateAmountRequest(product.id, product.amount + 1));
   }
+
+  function decrement(product) {
+    dispatch(CartActions.updateAmountRequest(product.id, product.amount - 1));
+  }
+
+  return (
+    <Container>
+      <Products>
+        {cart.map(p => (
+          <Product key={String(p.id)}>
+            <Infos>
+              <Photo source={{ uri: p.image }} />
+              <Details>
+                <Title>{p.title}</Title>
+                <Price>{p.priceFormatted}</Price>
+              </Details>
+              <DeleteButton
+                onPress={() => dispatch(CartActions.removeFromCart(p.id))}
+              >
+                <Icon name="delete-forever" color="#7159c1" size={24} />
+              </DeleteButton>
+            </Infos>
+            <Control>
+              <RemoveButton onPress={() => decrement(p)}>
+                <Icon name="remove-circle-outline" color="#7159c1" size={20} />
+              </RemoveButton>
+              <ProductAmount value={String(p.amount)} />
+              <AddButton onPress={() => increment(p)}>
+                <Icon name="add-circle-outline" color="#7159c1" size={20} />
+              </AddButton>
+              <Subtotal>{p.subTotalFormatted}</Subtotal>
+            </Control>
+          </Product>
+        ))}
+      </Products>
+      <Total>
+        <TotalText>Total</TotalText>
+        <TotalValue>{totalFormatted}</TotalValue>
+      </Total>
+      <OrderButton>
+        <OrderText>Finalizar Pedido</OrderText>
+      </OrderButton>
+    </Container>
+  );
 }
-
-const mapStateToProps = state => ({
-  cart: state.cart.map(p => ({
-    ...p,
-    subTotalFormatted: formatPrice(p.price * p.amount),
-  })),
-  totalFormatted: formatPrice(
-    state.cart.reduce((amountSum, p) => {
-      return amountSum + p.price * p.amount;
-    }, 0)
-  ),
-});
-
-const mapDispatchToProps = dispatch =>
-  bindActionCreators(CartActions, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(Cart);
