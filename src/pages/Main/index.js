@@ -12,7 +12,7 @@ import {
   Container,
   Products,
   Product,
-  Logo,
+  Photo,
   Title,
   Price,
   AddButton,
@@ -63,7 +63,7 @@ class Main extends Component {
           keyExtractor={product => String(product.id)}
           renderItem={({ item }) => (
             <Product>
-              <Logo source={{ uri: item.image }} />
+              <Photo source={{ uri: item.image }} />
               <Title>{item.title}</Title>
               <Price>{item.formattedPrice}</Price>
               <AddButton onPress={() => this.handleAddProduct(item.id)}>

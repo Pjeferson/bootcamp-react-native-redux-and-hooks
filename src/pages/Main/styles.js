@@ -15,7 +15,7 @@ export const Product = styled.View`
   width: 220px;
 `;
 
-export const Logo = styled.Image`
+export const Photo = styled.Image`
   height: 200px;
   width: 200px;
   background: #eee;
