@@ -53,6 +53,7 @@ export const RemoveButton = styled.TouchableOpacity``;
 
 export const ProductAmount = styled.TextInput.attrs({
   readonly: true,
+  editable: false,
 })`
   background: #fff;
   min-width: 50px;
